@@ -37,6 +37,9 @@ public class Main {
         final HttpServer server = startServer();
         System.out.println(String.format("Jersey app started with endpoints available at "
                 + "%s%nHit Ctrl-C to stop it...", BASE_URI));
+        System.out.println("Oracle Host: " + System.getenv("ORACLEHOST"));
+        System.out.println("Oracle Port: " + System.getenv("ORACLEPORT"));
+        System.out.println("Oracle SID: " + System.getenv("ORACLESID"));
         try {
             server.start();
             Thread.currentThread().join();
