@@ -15,7 +15,7 @@ public class FornecimentoDAO extends Repository {
     public List<FornecimentoTO> findAll() {
         List<FornecimentoTO> fornecimentos = new ArrayList<>();
         String sql = "SELECT f.ID_FORNECIMENTO, f.TIPO_CONTRATO, f.PRECO_KWH, f.DATA_VENCIMENTO, " +
-                "f.TIPO_ENERGIA, f.PROCESSO_OBTENCAO, f.FORNECIMENTO_IMAGEM" +
+                "f.TIPO_ENERGIA, f.PROCESSO_OBTENCAO, f.FORNECIMENTO_IMAGEM," +
                 "fn.ID_FORNECEDOR, fn.LICENCIATURA, fn.CAPACIDADE, fn.STATUS, fn.DATA_OPERACAO, " +
                 "fn.ENERGIA_PRIMARIA, fn.REGIAO, " +
                 "u.ID_USUARIO, u.NOME_USUARIO, u.RAZAO_SOCIAL, u.CNPJ, u.CPF, u.TIPO_CONTA, " +
@@ -70,7 +70,7 @@ public class FornecimentoDAO extends Repository {
     public List<FornecimentoTO> findByUsuarioId(Long usuarioId) {
         List<FornecimentoTO> fornecimentos = new ArrayList<>();
         String sql = "SELECT f.ID_FORNECIMENTO, f.TIPO_CONTRATO, f.PRECO_KWH, f.DATA_VENCIMENTO, " +
-                "f.TIPO_ENERGIA, f.PROCESSO_OBTENCAO, f.FORNECIMENTO_IMAGEM" +
+                "f.TIPO_ENERGIA, f.PROCESSO_OBTENCAO, f.FORNECIMENTO_IMAGEM," +
                 "fn.ID_FORNECEDOR, fn.LICENCIATURA, fn.CAPACIDADE, fn.STATUS, fn.DATA_OPERACAO, fn.ENERGIA_PRIMARIA, fn.REGIAO, " +
                 "u.ID_USUARIO, u.NOME_USUARIO, u.RAZAO_SOCIAL, u.CNPJ, u.CPF, u.TIPO_CONTA, " +
                 "u.IMAGEM_FOTO, u.NUMERO_SENHA, u.VALOR_TOKEN, u.DATA_CADASTRO " +
@@ -126,7 +126,7 @@ public class FornecimentoDAO extends Repository {
     public FornecimentoTO findById(Long idFornecimento) {
         FornecimentoTO fornecimento = null;  // Start with null, since no record found means no object.
         String sql = "SELECT f.ID_FORNECIMENTO, f.TIPO_CONTRATO, f.PRECO_KWH, f.DATA_VENCIMENTO, " +
-                "f.TIPO_ENERGIA, f.PROCESSO_OBTENCAO, f.FORNECIMENTO_IMAGEM" +
+                "f.TIPO_ENERGIA, f.PROCESSO_OBTENCAO, f.FORNECIMENTO_IMAGEM," +
                 "fn.ID_FORNECEDOR, fn.LICENCIATURA, fn.CAPACIDADE, fn.STATUS, fn.DATA_OPERACAO, " +
                 "fn.ENERGIA_PRIMARIA, fn.REGIAO, " +
                 "u.ID_USUARIO, u.NOME_USUARIO, u.RAZAO_SOCIAL, u.CNPJ, u.CPF, u.TIPO_CONTA, " +
