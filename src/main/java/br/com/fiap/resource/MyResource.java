@@ -1,4 +1,4 @@
-package br.com.fiap.resouce;
+package br.com.fiap.resource;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
