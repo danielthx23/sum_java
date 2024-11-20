@@ -15,7 +15,7 @@ public class FornecimentoDAO extends Repository {
     public List<FornecimentoTO> findAll() {
         List<FornecimentoTO> fornecimentos = new ArrayList<>();
         String sql = "SELECT f.ID_FORNECIMENTO, f.TIPO_CONTRATO, f.PRECO_KWH, f.DATA_VENCIMENTO, " +
-                "f.TIPO_ENERGIA, f.PROCESSO_OBTENCAO, " +
+                "f.TIPO_ENERGIA, f.PROCESSO_OBTENCAO, f.FORNECIMENTO_IMAGEM" +
                 "fn.ID_FORNECEDOR, fn.LICENCIATURA, fn.CAPACIDADE, fn.STATUS, fn.DATA_OPERACAO, " +
                 "fn.ENERGIA_PRIMARIA, fn.REGIAO, " +
                 "u.ID_USUARIO, u.NOME_USUARIO, u.RAZAO_SOCIAL, u.CNPJ, u.CPF, u.TIPO_CONTA, " +
@@ -34,6 +34,7 @@ public class FornecimentoDAO extends Repository {
                 fornecimento.setDataVencimento(rs.getTimestamp("DATA_VENCIMENTO"));
                 fornecimento.setTipoEnergia(rs.getString("TIPO_ENERGIA"));
                 fornecimento.setProcessoObtencao(rs.getString("PROCESSO_OBTENCAO"));
+                fornecimento.setFornecimentoImagem(rs.getString("FORNECIMENTO_IMAGEM"));
 
                 FornecedorTO fornecedor = new FornecedorTO();
                 fornecedor.setIdFornecedor(rs.getLong("ID_FORNECEDOR"));
@@ -69,7 +70,7 @@ public class FornecimentoDAO extends Repository {
     public List<FornecimentoTO> findByUsuarioId(Long usuarioId) {
         List<FornecimentoTO> fornecimentos = new ArrayList<>();
         String sql = "SELECT f.ID_FORNECIMENTO, f.TIPO_CONTRATO, f.PRECO_KWH, f.DATA_VENCIMENTO, " +
-                "f.TIPO_ENERGIA, f.PROCESSO_OBTENCAO, " +
+                "f.TIPO_ENERGIA, f.PROCESSO_OBTENCAO, f.FORNECIMENTO_IMAGEM" +
                 "fn.ID_FORNECEDOR, fn.LICENCIATURA, fn.CAPACIDADE, fn.STATUS, fn.DATA_OPERACAO, fn.ENERGIA_PRIMARIA, fn.REGIAO, " +
                 "u.ID_USUARIO, u.NOME_USUARIO, u.RAZAO_SOCIAL, u.CNPJ, u.CPF, u.TIPO_CONTA, " +
                 "u.IMAGEM_FOTO, u.NUMERO_SENHA, u.VALOR_TOKEN, u.DATA_CADASTRO " +
@@ -89,6 +90,7 @@ public class FornecimentoDAO extends Repository {
                 fornecimento.setDataVencimento(rs.getTimestamp("DATA_VENCIMENTO"));
                 fornecimento.setTipoEnergia(rs.getString("TIPO_ENERGIA"));
                 fornecimento.setProcessoObtencao(rs.getString("PROCESSO_OBTENCAO"));
+                fornecimento.setFornecimentoImagem(rs.getString("FORNECIMENTO_IMAGEM"));
 
                 FornecedorTO fornecedor = new FornecedorTO();
                 fornecedor.setIdFornecedor(rs.getLong("ID_FORNECEDOR"));
@@ -124,7 +126,7 @@ public class FornecimentoDAO extends Repository {
     public FornecimentoTO findById(Long idFornecimento) {
         FornecimentoTO fornecimento = null;  // Start with null, since no record found means no object.
         String sql = "SELECT f.ID_FORNECIMENTO, f.TIPO_CONTRATO, f.PRECO_KWH, f.DATA_VENCIMENTO, " +
-                "f.TIPO_ENERGIA, f.PROCESSO_OBTENCAO, " +
+                "f.TIPO_ENERGIA, f.PROCESSO_OBTENCAO, f.FORNECIMENTO_IMAGEM" +
                 "fn.ID_FORNECEDOR, fn.LICENCIATURA, fn.CAPACIDADE, fn.STATUS, fn.DATA_OPERACAO, " +
                 "fn.ENERGIA_PRIMARIA, fn.REGIAO, " +
                 "u.ID_USUARIO, u.NOME_USUARIO, u.RAZAO_SOCIAL, u.CNPJ, u.CPF, u.TIPO_CONTA, " +
@@ -138,7 +140,7 @@ public class FornecimentoDAO extends Repository {
             ps.setLong(1, idFornecimento);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                fornecimento = new FornecimentoTO();  // Only instantiate if a record is found
+                fornecimento = new FornecimentoTO();
 
                 fornecimento.setIdFornecimento(rs.getLong("ID_FORNECIMENTO"));
                 fornecimento.setTipoContrato(rs.getString("TIPO_CONTRATO"));
@@ -146,6 +148,7 @@ public class FornecimentoDAO extends Repository {
                 fornecimento.setDataVencimento(rs.getTimestamp("DATA_VENCIMENTO"));
                 fornecimento.setTipoEnergia(rs.getString("TIPO_ENERGIA"));
                 fornecimento.setProcessoObtencao(rs.getString("PROCESSO_OBTENCAO"));
+                fornecimento.setFornecimentoImagem(rs.getString("FORNECIMENTO_IMAGEM"));
 
                 FornecedorTO fornecedor = new FornecedorTO();
                 fornecedor.setIdFornecedor(rs.getLong("ID_FORNECEDOR"));
@@ -180,7 +183,7 @@ public class FornecimentoDAO extends Repository {
 
     public FornecimentoTO update(FornecimentoTO fornecimento) {
         String sql = "UPDATE SUM_FORNECIMENTO SET TIPO_CONTRATO = ?, PRECO_KWH = ?, DATA_VENCIMENTO = ?, " +
-                "TIPO_ENERGIA = ?, PROCESSO_OBTENCAO = ? WHERE ID_FORNECIMENTO = ?";
+                "TIPO_ENERGIA = ?, PROCESSO_OBTENCAO = ?, FORNECIMENTO_IMAGEM = ? WHERE ID_FORNECIMENTO = ?";
 
         try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
             ps.setString(1, fornecimento.getTipoContrato());
@@ -189,6 +192,7 @@ public class FornecimentoDAO extends Repository {
             ps.setString(4, fornecimento.getTipoEnergia());
             ps.setString(5, fornecimento.getProcessoObtencao());
             ps.setLong(6, fornecimento.getIdFornecimento());
+            ps.setString(7, fornecimento.getFornecimentoImagem());
             ps.executeUpdate();
 
             return fornecimento;
@@ -199,8 +203,8 @@ public class FornecimentoDAO extends Repository {
     }
 
     public FornecimentoTO save(FornecimentoTO fornecimento) {
-        String sql = "INSERT INTO SUM_FORNECIMENTO (TIPO_CONTRATO, PRECO_KWH, DATA_VENCIMENTO, TIPO_ENERGIA, PROCESSO_OBTENCAO, ID_FORNECEDOR) " +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO SUM_FORNECIMENTO (TIPO_CONTRATO, PRECO_KWH, DATA_VENCIMENTO, TIPO_ENERGIA, PROCESSO_OBTENCAO, ID_FORNECEDOR, FORNECIMENTO_IMAGEM) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
             ps.setString(1, fornecimento.getTipoContrato());
@@ -209,6 +213,7 @@ public class FornecimentoDAO extends Repository {
             ps.setString(4, fornecimento.getTipoEnergia());
             ps.setString(5, fornecimento.getProcessoObtencao());
             ps.setLong(6, fornecimento.getFornecedor().getIdFornecedor());
+            ps.setString(7, fornecimento.getFornecimentoImagem());
 
             ps.executeUpdate();
             return fornecimento;

@@ -26,10 +26,12 @@ public class FornecimentoTO {
     @Size(max = 1000)
     private String processoObtencao;
 
+    private String fornecimentoImagem;
+
     public FornecimentoTO() {
     }
 
-    public FornecimentoTO(Long idFornecimento, String tipoContrato, double precoKwh, Timestamp dataVencimento, FornecedorTO fornecedor, String tipoEnergia, String processoObtencao) {
+    public FornecimentoTO(Long idFornecimento, String tipoContrato, double precoKwh, Timestamp dataVencimento, FornecedorTO fornecedor, String tipoEnergia, String processoObtencao, String fornecimentoImagem) {
         this.idFornecimento = idFornecimento;
         this.tipoContrato = tipoContrato;
         this.precoKwh = precoKwh;
@@ -37,6 +39,7 @@ public class FornecimentoTO {
         this.fornecedor = fornecedor;
         this.tipoEnergia = tipoEnergia;
         this.processoObtencao = processoObtencao;
+        this.fornecimentoImagem = fornecimentoImagem;
     }
 
     public Long getIdFornecimento() {
@@ -93,5 +96,13 @@ public class FornecimentoTO {
 
     public void setProcessoObtencao(@Size(max = 1000) String processoObtencao) {
         this.processoObtencao = processoObtencao;
+    }
+
+    public String getFornecimentoImagem() {
+        return fornecimentoImagem;
+    }
+
+    public void setFornecimentoImagem(String fornecimentoImagem) {
+        this.fornecimentoImagem = fornecimentoImagem;
     }
 }
