@@ -14,13 +14,12 @@ public class PostDAO extends Repository {
 
     public PostTO save(PostTO post) {
         String sql = "INSERT INTO SUM_POST (TITULO, DESCRICAO, IMAGEM, DATA_CADASTRO, ID_USUARIO) " +
-                "VALUES (?, ?, ?, ?, ?)";
+                "VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?)";
         try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
             ps.setString(1, post.getTitulo());
             ps.setString(2, post.getDescricao());
             ps.setString(3, post.getImagem());
-            ps.setTimestamp(4, post.getDataCadastro());
-            ps.setLong(5, post.getUsuario().getIdUsuario());
+            ps.setLong(4, post.getUsuario().getIdUsuario());
             ps.executeUpdate();
             return post;
         } catch (SQLException e) {
@@ -30,15 +29,14 @@ public class PostDAO extends Repository {
     }
 
     public PostTO update(PostTO post) {
-        String sql = "UPDATE SUM_POST SET TITULO = ?, DESCRICAO = ?, IMAGEM = ?, DATA_CADASTRO = ?, ID_USUARIO = ? " +
+        String sql = "UPDATE SUM_POST SET TITULO = ?, DESCRICAO = ?, IMAGEM = ?, ID_USUARIO = ? " +
                 "WHERE ID_POST = ?";
         try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
             ps.setString(1, post.getTitulo());
             ps.setString(2, post.getDescricao());
             ps.setString(3, post.getImagem());
-            ps.setTimestamp(4, post.getDataCadastro());
-            ps.setLong(5, post.getUsuario().getIdUsuario());
-            ps.setLong(6, post.getIdPost());
+            ps.setLong(4, post.getUsuario().getIdUsuario());
+            ps.setLong(5, post.getIdPost());
             ps.executeUpdate();
             return post;
         } catch (SQLException e) {
