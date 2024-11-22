@@ -191,8 +191,8 @@ public class FornecimentoDAO extends Repository {
             ps.setTimestamp(3, fornecimento.getDataVencimento());
             ps.setString(4, fornecimento.getTipoEnergia());
             ps.setString(5, fornecimento.getProcessoObtencao());
-            ps.setLong(6, fornecimento.getIdFornecimento());
-            ps.setString(7, fornecimento.getFornecimentoImagem());
+            ps.setString(6, fornecimento.getFornecimentoImagem());
+            ps.setLong(7, fornecimento.getIdFornecimento());
             ps.executeUpdate();
 
             return fornecimento;
