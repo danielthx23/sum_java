@@ -1,7 +1,9 @@
 package br.com.fiap.bo;
 
 import br.com.fiap.dao.ComentarioDAO;
+import br.com.fiap.dao.FornecimentoDAO;
 import br.com.fiap.to.ComentarioTO;
+import br.com.fiap.to.FornecimentoTO;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -30,6 +32,11 @@ public class ComentarioBO {
     public List<ComentarioTO> findByPostId(Long postId) {
         ComentarioDAO comentarioDAO = new ComentarioDAO();
         return comentarioDAO.findByPostId(postId);
+    }
+
+    public ComentarioTO findById(Long idComentario) {
+        ComentarioDAO comentarioDAO = new ComentarioDAO();
+        return comentarioDAO.findById(idComentario);
     }
 
 }

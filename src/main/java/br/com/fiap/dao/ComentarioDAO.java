@@ -125,4 +125,38 @@ public class ComentarioDAO extends Repository {
             }
             return comentarios;
         }
+
+    public ComentarioTO findById(Long idComentario) {
+        ComentarioTO comentario = null;
+        String sql = "SELECT c.*, u.* FROM SUM_COMENTARIO c JOIN SUM_USUARIO u ON c.ID_USUARIO = u.ID_USUARIO WHERE c.ID_COMENTARIO = ?";
+        try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
+            ps.setLong(1, idComentario);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                comentario = new ComentarioTO();
+                comentario.setIdComentario(rs.getLong("ID_COMENTARIO"));
+                comentario.setTitulo(rs.getString("TITULO"));
+                comentario.setTexto(rs.getString("TEXTO"));
+                comentario.setImagem(rs.getString("IMAGEM"));
+
+                UsuarioTO usuario = new UsuarioTO();
+                usuario.setIdUsuario(rs.getLong("ID_USUARIO"));
+                usuario.setNomeUsuario(rs.getString("NOME_USUARIO"));
+                usuario.setRazaoSocial(rs.getString("RAZAO_SOCIAL"));
+                usuario.setCnpj(rs.getString("CNPJ"));
+                usuario.setCpf(rs.getString("CPF"));
+                usuario.setTipoConta(rs.getString("TIPO_CONTA"));
+                usuario.setImagemFoto(rs.getString("IMAGEM_FOTO"));
+                usuario.setNumeroSenha(rs.getString("NUMERO_SENHA"));
+                usuario.setValorToken(rs.getString("VALOR_TOKEN"));
+                usuario.setDataCadastro(rs.getTimestamp("DATA_CADASTRO"));
+
+                comentario.setUsuario(usuario);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar Comentario por ID_COMENTARIO: " + e.getMessage());
+        }
+        return comentario;
+    }
+
 };

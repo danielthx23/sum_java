@@ -57,4 +57,12 @@ public class ComentarioResource {
         List<ComentarioTO> comentarios = comentarioBO.findByPostId(postId);
         return Response.ok(comentarios).build();
     }
+
+    @GET
+    @Path("/{comentarioId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findById(@PathParam("comentarioId") Long comentarioId) {
+        ComentarioTO comentario = comentarioBO.findById(comentarioId);
+        return Response.ok(comentario).build();
+    }
 }
