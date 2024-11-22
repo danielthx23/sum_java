@@ -1,6 +1,7 @@
 package br.com.fiap.dao;
 
 import br.com.fiap.to.ComentarioTO;
+import br.com.fiap.to.PostTO;
 import br.com.fiap.to.UsuarioTO;
 
 import java.sql.PreparedStatement;
@@ -71,6 +72,11 @@ public class ComentarioDAO extends Repository {
                     comentario.setTexto(rs.getString("TEXTO"));
                     comentario.setImagem(rs.getString("IMAGEM"));
 
+                    PostTO post = new PostTO();
+                    post.setIdPost(rs.getLong("ID_POST"));
+
+                    comentario.setPost(post);
+
                     UsuarioTO usuario = new UsuarioTO();
                     usuario.setIdUsuario(rs.getLong("ID_USUARIO"));
                     usuario.setNomeUsuario(rs.getString("NOME_USUARIO"));
@@ -105,6 +111,11 @@ public class ComentarioDAO extends Repository {
                     comentario.setTexto(rs.getString("TEXTO"));
                     comentario.setImagem(rs.getString("IMAGEM"));
 
+                    PostTO post = new PostTO();
+                    post.setIdPost(rs.getLong("ID_POST"));
+
+                    comentario.setPost(post);
+
                     UsuarioTO usuario = new UsuarioTO();
                     usuario.setIdUsuario(rs.getLong("ID_USUARIO"));
                     usuario.setNomeUsuario(rs.getString("NOME_USUARIO"));
@@ -138,6 +149,11 @@ public class ComentarioDAO extends Repository {
                 comentario.setTitulo(rs.getString("TITULO"));
                 comentario.setTexto(rs.getString("TEXTO"));
                 comentario.setImagem(rs.getString("IMAGEM"));
+
+                PostTO post = new PostTO();
+                post.setIdPost(rs.getLong("ID_POST"));
+
+                comentario.setPost(post);
 
                 UsuarioTO usuario = new UsuarioTO();
                 usuario.setIdUsuario(rs.getLong("ID_USUARIO"));
