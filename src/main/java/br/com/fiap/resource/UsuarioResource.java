@@ -15,12 +15,15 @@ public class UsuarioResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createUsuario(UsuarioTO usuario) {
-        UsuarioTO savedUsuario = usuarioBO.save(usuario);
-        if (savedUsuario != null) {
-            return Response.status(Response.Status.CREATED).entity(savedUsuario).build();
+        UsuarioTO resultado = usuarioBO.save(usuario);
+        Response.ResponseBuilder response = null;
+        if (resultado != null) {
+            response = Response.status(Response.Status.CREATED);
         } else {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Usuário não encontrado").build();
+            response = Response.status(Response.Status.INTERNAL_SERVER_ERROR);
         }
+        response.entity(resultado);
+        return response.build();
     }
 
     @PUT
@@ -29,23 +32,29 @@ public class UsuarioResource {
     @Path("/{id}")
     public Response updateUsuario(@PathParam("id") Long idUsuario, UsuarioTO usuario) {
         usuario.setIdUsuario(idUsuario);
-        UsuarioTO updatedUsuario = usuarioBO.update(usuario);
-        if (updatedUsuario != null) {
-            return Response.ok(updatedUsuario).build();
+        UsuarioTO resultado = usuarioBO.update(usuario);
+        Response.ResponseBuilder response = null;
+        if (resultado != null) {
+            response = Response.ok();
         } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Usuário não encontrado").build();
+            response = Response.status(Response.Status.NOT_FOUND);
         }
+        response.entity(resultado);
+        return response.build();
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findUsuarioById(@PathParam("id") Long idUsuario) {
-        UsuarioTO usuario = usuarioBO.findById(idUsuario);
-        if (usuario != null) {
-            return Response.ok(usuario).build();
+        UsuarioTO resultado = usuarioBO.findById(idUsuario);
+        Response.ResponseBuilder response = null;
+        if (resultado != null) {
+            response = Response.ok();
         } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Usuário não encontrado").build();
+            response = Response.status(Response.Status.NOT_FOUND);
         }
+        response.entity(resultado);
+        return response.build();
     }
 }

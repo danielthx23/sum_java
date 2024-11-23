@@ -1,6 +1,7 @@
 package br.com.fiap.resource;
 
 import br.com.fiap.bo.LoginBO;
+import br.com.fiap.to.UsuarioLoginTO;
 import br.com.fiap.to.UsuarioTO;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -17,42 +18,15 @@ public class LoginResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(LoginRequest loginRequest) {
-        UsuarioTO usuario = loginBO.login(loginRequest.getCpf(), loginRequest.getCnpj(), loginRequest.getNumeroSenha());
-        if (usuario != null) {
-            return Response.ok(usuario).build();
+    public Response login(UsuarioLoginTO loginRequest) {
+        UsuarioTO resultado = loginBO.login(loginRequest.getCpf(), loginRequest.getCnpj(), loginRequest.getNumeroSenha());
+        Response.ResponseBuilder response = null;
+        if (resultado != null) {
+            response = Response.ok();
         } else {
-            return Response.status(Response.Status.UNAUTHORIZED).entity("Credenciais Inválidas!").build();
+            response = Response.status(Response.Status.UNAUTHORIZED).entity("Credenciais Inválidas!");
         }
-    }
-
-    public static class LoginRequest {
-        private String cpf;
-        private String cnpj;
-        private String numeroSenha;
-
-        public String getCpf() {
-            return cpf;
-        }
-
-        public void setCpf(String cpf) {
-            this.cpf = cpf;
-        }
-
-        public String getCnpj() {
-            return cnpj;
-        }
-
-        public void setCnpj(String cnpj) {
-            this.cnpj = cnpj;
-        }
-
-        public String getNumeroSenha() {
-            return numeroSenha;
-        }
-
-        public void setNumeroSenha(String numeroSenha) {
-            this.numeroSenha = numeroSenha;
-        }
+        response.entity(resultado);
+        return response.build();
     }
 }

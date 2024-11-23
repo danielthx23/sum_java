@@ -1,7 +1,6 @@
 package br.com.fiap.dao;
 
 import br.com.fiap.to.PostTO;
-import br.com.fiap.to.ComentarioTO;
 import br.com.fiap.to.UsuarioTO;
 
 import java.sql.PreparedStatement;
@@ -18,7 +17,7 @@ public class PostDAO extends Repository {
         try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
             ps.setString(1, post.getTitulo());
             ps.setString(2, post.getDescricao());
-            ps.setString(3, post.getImagem());
+            ps.setString(3, (post.validarUrl(post.getImagem()) ? post.getImagem() : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQM7QASNJmlXOAi1wjMYD0ES3vRAOx2cERm8EUeH8CJWvB1uV7dZEpN4YNWbO1V-d30yOw"));
             ps.setLong(4, post.getUsuario().getIdUsuario());
             ps.executeUpdate();
             return post;

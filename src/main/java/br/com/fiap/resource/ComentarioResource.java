@@ -15,54 +15,88 @@ public class ComentarioResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response createComentario(ComentarioTO comentario) {
-        ComentarioTO savedComentario = comentarioBO.save(comentario);
-        return Response.status(Response.Status.CREATED).entity(savedComentario).build();
+        ComentarioTO resultado = comentarioBO.save(comentario);
+        Response.ResponseBuilder response = null;
+        if (resultado != null) {
+            response = Response.created(null);
+        } else {
+            response = Response.status(400);
+        }
+        response.entity(resultado);
+        return response.build();
     }
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     public Response updateComentario(@PathParam("id") Long idComentario, ComentarioTO comentario) {
         comentario.setIdComentario(idComentario);
-        ComentarioTO updatedComentario = comentarioBO.update(comentario);
-        return Response.ok(updatedComentario).build();
+        ComentarioTO resultado = comentarioBO.update(comentario);
+        Response.ResponseBuilder response = null;
+        if (resultado != null) {
+            response = Response.ok();
+        } else {
+            response = Response.status(404);
+        }
+        response.entity(resultado);
+        return response.build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response deleteComentario(@PathParam("id") Long idComentario) {
-        boolean isDeleted = comentarioBO.delete(idComentario);
-        if (isDeleted) {
-            return Response.status(Response.Status.NO_CONTENT).build();
+        Response.ResponseBuilder response = null;
+        if (comentarioBO.delete(idComentario)) {
+            response = Response.status(204);
         } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            response = Response.status(404);
         }
+        return response.build();
     }
 
     @GET
     @Path("/usuario/{usuarioId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findByUsuarioId(@PathParam("usuarioId") Long usuarioId) {
-        List<ComentarioTO> comentarios = comentarioBO.findByUsuarioId(usuarioId);
-        return Response.ok(comentarios).build();
+        List<ComentarioTO> resultado = comentarioBO.findByUsuarioId(usuarioId);
+        Response.ResponseBuilder response = null;
+        if (resultado != null && !resultado.isEmpty()) {
+            response = Response.ok();
+        } else {
+            response = Response.status(404);
+        }
+        response.entity(resultado);
+        return response.build();
     }
 
     @GET
     @Path("/post/{postId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findByPostId(@PathParam("postId") Long postId) {
-        List<ComentarioTO> comentarios = comentarioBO.findByPostId(postId);
-        return Response.ok(comentarios).build();
+        List<ComentarioTO> resultado = comentarioBO.findByPostId(postId);
+        Response.ResponseBuilder response = null;
+        if (resultado != null && !resultado.isEmpty()) {
+            response = Response.ok();
+        } else {
+            response = Response.status(404);
+        }
+        response.entity(resultado);
+        return response.build();
     }
 
     @GET
     @Path("/{comentarioId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findById(@PathParam("comentarioId") Long comentarioId) {
-        ComentarioTO comentario = comentarioBO.findById(comentarioId);
-        return Response.ok(comentario).build();
+        ComentarioTO resultado = comentarioBO.findById(comentarioId);
+        Response.ResponseBuilder response = null;
+        if (resultado != null) {
+            response = Response.ok();
+        } else {
+            response = Response.status(404);
+        }
+        response.entity(resultado);
+        return response.build();
     }
 }

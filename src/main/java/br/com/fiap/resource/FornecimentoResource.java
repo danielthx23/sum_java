@@ -16,57 +16,86 @@ public class FornecimentoResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
-        List<FornecimentoTO> fornecimentos = fornecimentoBO.findAll();
-        return Response.ok(fornecimentos).build();
+        List<FornecimentoTO> resultado = fornecimentoBO.findAll();
+        Response.ResponseBuilder response = null;
+        if (resultado != null && !resultado.isEmpty()) {
+            response = Response.ok();
+        } else {
+            response = Response.status(404);
+        }
+        response.entity(resultado);
+        return response.build();
     }
 
     @GET
     @Path("/usuario/{usuarioId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findByUsuarioId(@PathParam("usuarioId") Long usuarioId) {
-        List<FornecimentoTO> fornecimentos = fornecimentoBO.findByUsuarioId(usuarioId);
-        return Response.ok(fornecimentos).build();
-
+        List<FornecimentoTO> resultado = fornecimentoBO.findByUsuarioId(usuarioId);
+        Response.ResponseBuilder response = null;
+        if (resultado != null && !resultado.isEmpty()) {
+            response = Response.ok();
+        } else {
+            response = Response.status(404);
+        }
+        response.entity(resultado);
+        return response.build();
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findById(@PathParam("id") Long idFornecimento) {
-        FornecimentoTO fornecimento = fornecimentoBO.findById(idFornecimento);
-        if (fornecimento != null) {
-            return Response.ok(fornecimento).build();
+        FornecimentoTO resultado = fornecimentoBO.findById(idFornecimento);
+        Response.ResponseBuilder response = null;
+        if (resultado != null) {
+            response = Response.ok();
         } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Fornecimento não encontrado").build();
+            response = Response.status(404);
         }
+        response.entity(resultado);
+        return response.build();
     }
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     public Response update(@PathParam("id") Long idFornecimento, FornecimentoTO fornecimento) {
         fornecimento.setIdFornecimento(idFornecimento);
-        FornecimentoTO updatedFornecimento = fornecimentoBO.update(fornecimento);
-        return Response.ok(updatedFornecimento).build();
+        FornecimentoTO resultado = fornecimentoBO.update(fornecimento);
+        Response.ResponseBuilder response = null;
+        if (resultado != null) {
+            response = Response.ok();
+        } else {
+            response = Response.status(400);
+        }
+        response.entity(resultado);
+        return response.build();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response save(FornecimentoTO fornecimento) {
-        FornecimentoTO savedFornecimento = fornecimentoBO.save(fornecimento);
-        return Response.ok(savedFornecimento).build();
+        FornecimentoTO resultado = fornecimentoBO.save(fornecimento);
+        Response.ResponseBuilder response = null;
+        if (resultado != null) {
+            response = Response.created(null);
+        } else {
+            response = Response.status(400);
+        }
+        response.entity(resultado);
+        return response.build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Long idFornecimento) {
-        boolean isDeleted = fornecimentoBO.delete(idFornecimento);
-        if (isDeleted) {
-            return Response.status(Response.Status.NO_CONTENT).build();
+        Response.ResponseBuilder response = null;
+        if (fornecimentoBO.delete(idFornecimento)) {
+            response = Response.status(204);
         } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            response = Response.status(404);
         }
+        return response.build();
     }
 }

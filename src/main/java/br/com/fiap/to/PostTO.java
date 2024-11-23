@@ -3,6 +3,8 @@ package br.com.fiap.to;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -93,5 +95,14 @@ public class PostTO {
 
     public void setComentarios(List<ComentarioTO> comentarios) {
         this.comentarios = comentarios;
+    }
+
+    public boolean validarUrl(String url) {
+        try {
+            new URL(url);
+            return true;
+        } catch (MalformedURLException e) {
+            return false;
+        }
     }
 }

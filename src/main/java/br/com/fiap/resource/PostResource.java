@@ -17,12 +17,15 @@ public class PostResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response createPost(PostTO post) {
-        PostTO savedPost = postBO.save(post);
-        if (savedPost != null) {
-            return Response.status(Response.Status.CREATED).entity(savedPost).build();
+        PostTO resultado = postBO.save(post);
+        Response.ResponseBuilder response = null;
+        if (resultado != null) {
+            response = Response.status(Response.Status.CREATED);
         } else {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Erro ao criar Post").build();
+            response = Response.status(Response.Status.INTERNAL_SERVER_ERROR);
         }
+        response.entity(resultado);
+        return response.build();
     }
 
     @PUT
@@ -31,49 +34,70 @@ public class PostResource {
     @Path("/{id}")
     public Response updatePost(@PathParam("id") Long idPost, PostTO post) {
         post.setIdPost(idPost);
-        PostTO updatedPost = postBO.update(post);
-        if (updatedPost != null) {
-            return Response.ok(updatedPost).build();
+        PostTO resultado = postBO.update(post);
+        Response.ResponseBuilder response = null;
+        if (resultado != null) {
+            response = Response.ok();
         } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Post não encontrado").build();
+            response = Response.status(Response.Status.NOT_FOUND);
         }
+        response.entity(resultado);
+        return response.build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response deletePost(@PathParam("id") Long idPost) {
-        boolean isDeleted = postBO.delete(idPost);
-        if (isDeleted) {
-            return Response.status(Response.Status.NO_CONTENT).build();
+        Response.ResponseBuilder response = null;
+        if (postBO.delete(idPost)) {
+            response = Response.status(Response.Status.NO_CONTENT);
         } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Post não encontrado").build();
+            response = Response.status(Response.Status.NOT_FOUND);
         }
+        return response.build();
     }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAllPosts() {
-        List<PostTO> posts = postBO.findAll();
-        return Response.ok(posts).build();
+        List<PostTO> resultado = postBO.findAll();
+        Response.ResponseBuilder response = null;
+        if (resultado != null && !resultado.isEmpty()) {
+            response = Response.ok();
+        } else {
+            response = Response.status(Response.Status.NOT_FOUND);
+        }
+        response.entity(resultado);
+        return response.build();
     }
 
     @GET
     @Path("/usuario/{usuarioId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findPostsByUsuarioId(@PathParam("usuarioId") Long usuarioId) {
-        List<PostTO> posts = postBO.findByUsuarioId(usuarioId);
-        return Response.ok(posts).build();
+        List<PostTO> resultado = postBO.findByUsuarioId(usuarioId);
+        Response.ResponseBuilder response = null;
+        if (resultado != null && !resultado.isEmpty()) {
+            response = Response.ok();
+        } else {
+            response = Response.status(Response.Status.NOT_FOUND);
+        }
+        response.entity(resultado);
+        return response.build();
     }
 
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findPostById(@PathParam("id") Long idPost) {
-        PostTO post = postBO.findById(idPost);
-        if (post != null) {
-            return Response.ok(post).build();
+        PostTO resultado = postBO.findById(idPost);
+        Response.ResponseBuilder response = null;
+        if (resultado != null) {
+            response = Response.ok();
         } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("Post não encontrado").build();
+            response = Response.status(Response.Status.NOT_FOUND);
         }
+        response.entity(resultado);
+        return response.build();
     }
 }

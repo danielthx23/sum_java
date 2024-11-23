@@ -15,28 +15,42 @@ public class CertificadoResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response createCertificado(CertificadoTO certificado) {
-        CertificadoTO savedCertificado = certificadoBO.save(certificado);
-        return Response.status(Response.Status.CREATED).entity(savedCertificado).build();
+        CertificadoTO resultado = certificadoBO.save(certificado);
+        Response.ResponseBuilder response = null;
+        if (resultado != null) {
+            response = Response.created(null);
+        } else {
+            response = Response.status(400);
+        }
+        response.entity(resultado);
+        return response.build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response deleteCertificado(@PathParam("id") Long id) {
-        boolean isDeleted = certificadoBO.delete(id);
-        if (isDeleted) {
-            return Response.status(Response.Status.NO_CONTENT).build();
+        Response.ResponseBuilder response = null;
+        if (certificadoBO.delete(id)) {
+            response = Response.status(204);
         } else {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            response = Response.status(404);
         }
+        return response.build();
     }
 
     @GET
     @Path("/usuario/{usuarioId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getByUsuarioId(@PathParam("usuarioId") Long usuarioId) {
-        List<CertificadoTO> certificados = certificadoBO.getByUsuarioId(usuarioId);
-        return Response.ok(certificados).build();
+        List<CertificadoTO> resultado = certificadoBO.getByUsuarioId(usuarioId);
+        Response.ResponseBuilder response = null;
+        if (resultado != null && !resultado.isEmpty()) {
+            response = Response.ok();
+        } else {
+            response = Response.status(404);
+        }
+        response.entity(resultado);
+        return response.build();
     }
 }
