@@ -19,7 +19,7 @@ public class LoginResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(UsuarioLoginTO loginRequest) {
-        UsuarioTO resultado = loginBO.login(loginRequest.getCpf(), loginRequest.getCnpj(), loginRequest.getNumeroSenha());
+        UsuarioLoginTO resultado = loginBO.login(loginRequest.getCpf(), loginRequest.getCnpj(), loginRequest.getNumeroSenha());
         Response.ResponseBuilder response = null;
         if (resultado != null) {
             response = Response.ok();
